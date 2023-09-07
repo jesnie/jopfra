@@ -21,7 +21,7 @@ def set_python_version_in_github_actions(comp_req: cr.CompReq) -> None:
 def set_python_version(comp_req: cr.CompReq, pyproject: cr.PoetryPyprojectFile) -> cr.CompReq:
     comp_req = comp_req.for_python(
         cr.version("<", cr.ceil_ver(cr.MAJOR, cr.max_ver()))
-        & cr.version(">=", cr.floor_ver(cr.MINOR, cr.max_ver(cr.min_age(years=5))))
+        & cr.version(">=", cr.floor_ver(cr.MINOR, cr.max_ver(cr.min_age(years=3))))
     )
 
     pyproject.set_python_classifiers(comp_req)
@@ -44,6 +44,16 @@ def main() -> None:
         comp_req = cr.CompReq(python_specifier=prev_python_specifier)
         comp_req = set_python_version(comp_req, pyproject)
 
+        default_range = cr.version(
+            ">=",
+            cr.floor_ver(
+                cr.REL_MINOR,
+                cr.minimum_ver(
+                    cr.max_ver(cr.min_age(years=1)),
+                    cr.min_ver(cr.count(cr.MINOR, 3)),
+                ),
+            ),
+        ) & cr.version("<", cr.ceil_ver(cr.REL_MAJOR, cr.max_ver()))
         dev_range = cr.version(">=", cr.floor_ver(cr.REL_MINOR, cr.max_ver())) & cr.version(
             "<", cr.ceil_ver(cr.REL_MINOR, cr.max_ver())
         )
@@ -52,6 +62,10 @@ def main() -> None:
             comp_req,
             [
                 cr.dist("python") & cr.python_specifier(),
+                cr.dist("check_shapes") & default_range,
+                cr.dist("numpy") & default_range,
+                # pip install torch --index-url https://download.pytorch.org/whl/cpu
+                cr.dist("torch") & default_range,
             ],
         )
         pyproject.set_requirements(
