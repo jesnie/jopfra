@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from functools import wraps
@@ -8,6 +10,31 @@ import torch as tc
 from check_shapes import check_shapes, get_check_shapes
 
 from jopfra.types import AnyNDArray
+
+
+@dataclass(order=True, frozen=True)
+class Evaluation:
+    problem: Problem
+    x: AnyNDArray
+    loss: AnyNDArray
+    grads: AnyNDArray
+
+    @check_shapes(
+        "self.x: [batch_shape..., n_inputs]",
+        "self.loss: [batch_shape...]",
+        "self.grads: [batch_shape..., n_inputs]",
+    )
+    def __post_init__(self) -> None:
+        pass
+
+    @property
+    def shape(self) -> tuple[int, ...]:
+        return self.loss.shape
+
+    @property
+    def n_inputs(self) -> int:
+        return self.problem.n_inputs
+
 
 check_problem_shapes = check_shapes(
     "x: [batch..., n_inputs]",
@@ -41,9 +68,13 @@ class Problem:
     def __post_init__(self) -> None:
         assert check_problem_shapes is get_check_shapes(self.func)
 
-    @check_problem_shapes
-    def __call__(self, x: AnyNDArray) -> tuple[AnyNDArray, AnyNDArray]:
-        return self.func(x)
+    @check_shapes(
+        "x: [batch..., n_inputs]",
+        "return: [batch...]",
+    )
+    def __call__(self, x: AnyNDArray) -> Evaluation:
+        loss, grads = self.func(x)
+        return Evaluation(self, x, loss, grads)
 
     @property
     def n_inputs(self) -> int:
@@ -98,7 +129,7 @@ def torch_problem(
         def __wrap(x: AnyNDArray) -> tuple[AnyNDArray, AnyNDArray]:
             tx = tc.tensor(x, requires_grad=True)
             rx = func(tx)
-            rx.backward(tc.zeros(tx.shape[:-1], dtype=tx.dtype))  # type: ignore[no-untyped-call]
+            rx.backward(tc.ones(tx.shape[:-1], dtype=tx.dtype))  # type: ignore[no-untyped-call]
             return (
                 rx.detach().numpy(),
                 tx.grad.detach().numpy(),  # type: ignore[union-attr]

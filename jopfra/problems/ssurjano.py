@@ -6,7 +6,7 @@ import torch as tc
 from jopfra.problems.api import Problem, torch_problem
 
 
-def _make_ackley(d: int) -> Problem:
+def make_ackley(d: int) -> Problem:
     @torch_problem(
         domain_lower=[-32.768 for _ in range(d)],
         domain_upper=[32.768 for _ in range(d)],
@@ -35,4 +35,4 @@ def _make_ackley(d: int) -> Problem:
 
 
 for _d in [1, 2, 3]:
-    _make_ackley(_d)
+    make_ackley(_d)
