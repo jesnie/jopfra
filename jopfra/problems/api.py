@@ -43,6 +43,38 @@ check_problem_shapes = check_shapes(
 )
 
 
+class Problem(Protocol):
+    @property
+    def name(self) -> str:
+        ...
+
+    @property
+    def n_inputs(self) -> int:
+        ...
+
+    @property
+    def domain_lower(self) -> AnyNDArray:
+        ...
+
+    @property
+    def domain_upper(self) -> AnyNDArray:
+        ...
+
+    @property
+    def known_optima(self) -> Collection[AnyNDArray]:
+        ...
+
+    @check_shapes(
+        "x: [batch..., n_inputs]",
+        "return: [batch...]",
+    )
+    def __call__(self, x: AnyNDArray) -> Evaluation:
+        ...
+
+
+problems: dict[str, Problem] = {}
+
+
 class ProblemFunc(Protocol):
     def __call__(self, x: AnyNDArray) -> tuple[AnyNDArray, AnyNDArray]:
         ...
@@ -53,7 +85,7 @@ class ProblemFunc(Protocol):
 
 
 @dataclass(order=True, frozen=True)
-class Problem:
+class FuncProblem:
     name: str
     domain_lower: AnyNDArray
     domain_upper: AnyNDArray
@@ -82,9 +114,6 @@ class Problem:
         return n_inputs
 
 
-problems: dict[str, Problem] = {}
-
-
 def problem(
     domain_lower: AnyNDArray | Sequence[float],
     domain_upper: AnyNDArray | Sequence[float],
@@ -95,7 +124,7 @@ def problem(
     def _wrap(func: ProblemFunc) -> Problem:
         nonlocal name
         name = name or func.__name__
-        p = Problem(
+        p = FuncProblem(
             name,
             np.asarray(domain_lower),
             np.asarray(domain_upper),

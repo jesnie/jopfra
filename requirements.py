@@ -63,9 +63,13 @@ def main() -> None:
             [
                 cr.dist("python") & cr.python_specifier(),
                 cr.dist("check_shapes") & default_range,
+                cr.dist("GitPython") & default_range,
+                cr.dist("matplotlib") & default_range,
                 cr.dist("numpy") & default_range,
+                cr.dist("pandas") & default_range,
                 # pip install torch --index-url https://download.pytorch.org/whl/cpu
                 cr.dist("torch") & default_range,
+                cr.dist("typedpath") & default_range,
             ],
         )
         pyproject.set_requirements(
@@ -75,6 +79,7 @@ def main() -> None:
                 cr.dist("compreq") & dev_range,
                 cr.dist("isort") & dev_range,
                 cr.dist("mypy") & dev_range,
+                cr.dist("pandas-stubs") & default_range,
                 cr.dist("pylint") & dev_range,
                 cr.dist("pytest") & dev_range,
                 cr.dist("taskipy") & dev_range,

@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import Final
 
 import torch as tc
 
@@ -23,4 +24,4 @@ class Sobol(Minimiser):
             yield y
 
 
-sobol = Sobol()
+sobol: Final[Sobol] = Sobol()

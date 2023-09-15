@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import Final
 
 import numpy as np
 
@@ -44,8 +45,10 @@ class Min(Minimiser):
             yield flat.unflatten(flat_y)
 
 
-sobol_min = Min(sobol, scale=100, memory=True)
-random_min = Min(random, scale=100, memory=True)
+sobol_min: Final[Min] = Min(sobol, scale=1, memory=True)
+random_min: Final[Min] = Min(random, scale=1, memory=True)
+sobol_min_init: Final[Min] = Min(sobol, scale=100, memory=True)
+random_min_init: Final[Min] = Min(random, scale=100, memory=True)
 
 minimisers["sobol_min"] = sobol_min
 minimisers["random_min"] = random_min

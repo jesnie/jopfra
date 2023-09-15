@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import Final
 
 import numpy as np
 
@@ -21,4 +22,4 @@ class Random(Minimiser):
             yield y
 
 
-random = Random()
+random: Final[Random] = Random()
