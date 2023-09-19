@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-set -e
+set -xe
 
 git fetch origin main
 git checkout main
@@ -21,6 +21,7 @@ if [[ $(git status --porcelain) ]]; then
     gh pr create \
        --title "Update requirements" \
        --body "Automatic update of requirements." \
-       --reviewer jesnie
-    false
+       --reviewer jesnie \
+       || true
+    gh pr merge -s
 fi
