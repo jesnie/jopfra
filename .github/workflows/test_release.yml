@@ -20,6 +20,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install --all-extras
+      - run: poetry run pip install torch --index-url https://download.pytorch.org/whl/cpu
       - run: poetry run task test
 
   test-install:
@@ -36,6 +37,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install --only main
+      - run: poetry run pip install torch --index-url https://download.pytorch.org/whl/cpu
       - run: poetry run python -c "import jopfra"
 
   all-tests:

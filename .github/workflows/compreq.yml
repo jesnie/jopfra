@@ -5,6 +5,7 @@ on:
     # * is a special character in YAML so you have to quote this string
     # 10:17 every Monday - A compromise between random and a convenient time:
     - cron: '17 10 * * 1'
+  workflow_dispatch:
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -14,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#push-using-ssh-deploy-keys
+          ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
