@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 
 from jopfra.minimisers.api import Minimiser, minimisers
-from jopfra.minimisers.min import Min, sobol_min
+from jopfra.minimisers.min import Min, sobol_min_init
 from jopfra.minimisers.sobol import sobol
 from jopfra.problems.api import Evaluation, Problem
 
@@ -23,9 +23,9 @@ class GradDesc(Minimiser):
 minimisers["grad_desc_1"] = GradDesc(sobol, 1e-1)
 minimisers["grad_desc_2"] = GradDesc(sobol, 1e-2)
 minimisers["grad_desc_3"] = GradDesc(sobol, 1e-3)
-minimisers["sobol_min_grad_desc_1"] = GradDesc(sobol_min, 1e-1)
-minimisers["sobol_min_grad_desc_2"] = GradDesc(sobol_min, 1e-2)
-minimisers["sobol_min_grad_desc_3"] = GradDesc(sobol_min, 1e-3)
-minimisers["sobol_min_grad_desc_1_min"] = Min(GradDesc(sobol_min, 1e-1), scale=10, memory=True)
-minimisers["sobol_min_grad_desc_2_min"] = Min(GradDesc(sobol_min, 1e-2), scale=10, memory=True)
-minimisers["sobol_min_grad_desc_3_min"] = Min(GradDesc(sobol_min, 1e-3), scale=10, memory=True)
+minimisers["sobol_min_grad_desc_1"] = GradDesc(sobol_min_init, 1e-1)
+minimisers["sobol_min_grad_desc_2"] = GradDesc(sobol_min_init, 1e-2)
+minimisers["sobol_min_grad_desc_3"] = GradDesc(sobol_min_init, 1e-3)
+minimisers["sobol_min_grad_desc_1_min"] = Min(GradDesc(sobol_min_init, 1e-1), scale=10, memory=True)
+minimisers["sobol_min_grad_desc_2_min"] = Min(GradDesc(sobol_min_init, 1e-2), scale=10, memory=True)
+minimisers["sobol_min_grad_desc_3_min"] = Min(GradDesc(sobol_min_init, 1e-3), scale=10, memory=True)

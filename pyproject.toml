@@ -19,10 +19,14 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
+GitPython = "<4,>=2.1"
 check_shapes = "<2,>=0.1.0"
+matplotlib = "<4,>=3.6"
 numpy = "<2,>=1.23"
+pandas = "<3,>=1.4"
 python = "<4,>=3.10"
 torch = "<3,>=1.12"
+typedpath = "<0.2,>=0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,6 +34,7 @@ black = "<23.10,>=23.9"
 compreq = "<0.3.1,>=0.3.0"
 isort = "<5.13,>=5.12"
 mypy = "<1.6,>=1.5"
+pandas-stubs = "<3,>=1.4"
 pylint = "<2.18,>=2.17"
 pytest = "<7.5,>=7.4"
 taskipy = "<1.13,>=1.12"
@@ -78,6 +83,7 @@ disable = [
   "too-many-locals",
   "too-many-statements",
   "unhashable-member",
+  "unsubscriptable-object",
   "unused-argument",
   "use-implicit-booleaness-not-comparison",
 ]
