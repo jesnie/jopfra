@@ -4,6 +4,7 @@ from jopfra.minimisers.api import Minimiser, minimisers
 from jopfra.minimisers.min import Min, sobol_min_init
 from jopfra.minimisers.sobol import sobol
 from jopfra.problems.api import Evaluation, Problem
+from jopfra.problems.utils import wrap_domain
 
 
 class GradDesc(Minimiser):
@@ -17,6 +18,7 @@ class GradDesc(Minimiser):
             while True:
                 yield y
                 x = y.x - self._learning_rate * y.grads
+                x = wrap_domain(problem, x)
                 y = problem(x)
 
 

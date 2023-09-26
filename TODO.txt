@@ -1,3 +1,24 @@
 * Define some problems
-* Define some solvers
+  - gpflow
+  - (small) neural networks
+    - MNIST?
+  - Problems with mixed dtypes?
+  - Priors?
+* Define some minimisers
+  - diff evo
+  - Grid Search implemented in GridSampler
+  - Tree-structured Parzen Estimator algorithm implemented in TPESampler
+  - CMA-ES based algorithm implemented in CmaEsSampler
+  - Nondominated Sorting Genetic Algorithm II implemented in NSGAIISampler
+  - A Quasi Monte Carlo sampling algorithm implemented in QMCSampler
+  - own stuff
+    - diff evo + gradients
+    - CMA-ES + gradients?
+  - Torch optimisers?
+  - TF optimisers?
+  - SciPy optimisers?
 * Run them against each other.
+  - Better definition of how long to run
+  - Plotting of the behavior of each minimiser
+  - Some kind of summary plots
+  - Multiple repetitions

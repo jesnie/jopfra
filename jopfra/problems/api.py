@@ -98,7 +98,7 @@ class FuncProblem:
         "self.known_optima: [n_optima, n_inputs]",
     )
     def __post_init__(self) -> None:
-        assert check_problem_shapes is get_check_shapes(self.func)
+        assert check_problem_shapes is get_check_shapes(self.func), get_check_shapes(self.func)
 
     @check_shapes(
         "x: [batch..., n_inputs]",

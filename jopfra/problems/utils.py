@@ -1,3 +1,5 @@
+from collections.abc import Iterator
+
 import numpy as np
 import torch as tc
 from check_shapes import check_shapes
@@ -36,3 +38,41 @@ def get_sobol_samples(problem: Problem, n_samples: int) -> AnyNDArray:
     samples *= problem.domain_upper - problem.domain_lower
     samples += problem.domain_lower
     return samples
+
+
+@check_shapes(
+    "problem.domain_lower: [n_inputs]",
+    "problem.domain_upper: [n_inputs]",
+    "x: [batch..., n_inputs]",
+    "return: [batch..., n_inputs]",
+)
+def clip_domain(problem: Problem, x: AnyNDArray) -> AnyNDArray:
+    return np.clip(x, problem.domain_lower, problem.domain_upper)
+
+
+@check_shapes(
+    "problem.domain_lower: [n_inputs]",
+    "problem.domain_upper: [n_inputs]",
+    "x: [batch..., n_inputs]",
+    "return: [batch..., n_inputs]",
+)
+def wrap_domain(problem: Problem, x: AnyNDArray) -> AnyNDArray:
+    x -= problem.domain_lower
+    r = problem.domain_upper - problem.domain_lower
+    x %= 2 * r
+    x = np.where(x > r, 2 * r - x, x)
+    x += problem.domain_lower
+    return x
+
+
+def pretty_exp(n: int | None = None) -> Iterator[int]:
+    m = 0
+    base = 1
+    scales = (1, 2, 5)
+    while True:
+        for s in scales:
+            if n is not None and m >= n:
+                return
+            yield s * base
+            m += 1
+        base *= 10
