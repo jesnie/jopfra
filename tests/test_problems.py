@@ -7,7 +7,10 @@ from jopfra.problems.utils import get_domain_corners, get_sobol_samples
 
 @pytest.mark.parametrize("problem", problems.values(), ids=lambda p: p.name)
 def test_problem__domain(problem: Problem) -> None:
-    x = get_domain_corners(problem)
+    if problem.n_inputs <= 10:
+        x = get_domain_corners(problem)
+    else:
+        x = get_sobol_samples(problem, 1_000)
     y = problem(x)
     assert y.problem is problem
     assert y.x is x
@@ -30,13 +33,18 @@ def test_problem__batching(problem: Problem) -> None:
 
 @pytest.mark.parametrize("problem", problems.values(), ids=lambda p: p.name)
 def test_problem__optima(problem: Problem) -> None:
-    baseline_x = np.concatenate(
-        [
-            get_domain_corners(problem),
-            get_sobol_samples(problem, 10),
-        ],
-        axis=0,
-    )
+    if not problem.known_optima:
+        return
+
+    baseline_x = get_sobol_samples(problem, 1_000)
+    if problem.n_inputs <= 10:
+        baseline_x = np.concatenate(
+            [
+                get_domain_corners(problem),
+                baseline_x,
+            ],
+            axis=0,
+        )
     baseline_y = problem(baseline_x)
     min_baseline_loss = np.min(baseline_y.loss)
 

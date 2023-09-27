@@ -1,9 +1,11 @@
 from collections.abc import Sequence
 
+import numpy as np
 import torch as tc
 from check_shapes import check_shapes
 
 from jopfra.problems.api import Problem, torch_problem
+from jopfra.problems.utils import pretty_exp
 
 
 @check_shapes(
@@ -33,5 +35,5 @@ def make_quadratic(
 
 make_quadratic("quadratic_base", [-1.0], [1.0], [0.0])
 make_quadratic("quadratic_off_center", [-1.0], [1.0], [0.5])
-for d in [2, 3, 5]:
-    make_quadratic(f"quadratic_{d}d", d * [-1.0], d * [1.0], d * [0.0])
+for d in pretty_exp(10):
+    make_quadratic(f"quadratic_{d}d", d * [-1.0], d * [1.0], list(np.linspace(-1.0, 1.0, num=d)))
