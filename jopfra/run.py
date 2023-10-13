@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.axes import Axes
 
-from jopfra.minimisers.api import minimisers
+from jopfra.minimisers.api import iter_minimisers
 from jopfra.paths import ProblemMinimiserResultDir, ProblemResultDir, setup_dest
 from jopfra.problems.api import problems
 from jopfra.problems.monitoring import LoggingProblem
@@ -94,7 +94,7 @@ def main() -> None:
         default=[],
         type=str,
         nargs="+",
-        help=f"Minimisers for optimisation: Choose from {sorted(minimisers)}",
+        help=f"Minimisers for optimisation: Choose from {sorted(iter_minimisers)}",
     )
     parser.add_argument(
         "--n_iter",
@@ -115,8 +115,11 @@ def main() -> None:
     args = parser.parse_args()
     assert args.problems, (args.problems, sorted(problems))
     assert all(p in problems for p in args.problems), (args.problems, sorted(problems))
-    assert args.minimisers, (args.minimisers, sorted(minimisers))
-    assert all(p in minimisers for p in args.minimisers), (args.minimisers, sorted(minimisers))
+    assert args.minimisers, (args.minimisers, sorted(iter_minimisers))
+    assert all(p in iter_minimisers for p in args.minimisers), (
+        args.minimisers,
+        sorted(iter_minimisers),
+    )
 
     dest = setup_dest(args.dest)
     dest.metadata.write(
@@ -135,10 +138,11 @@ def main() -> None:
             print(p_name)
             print(m_name)
             problem = LoggingProblem(problems[p_name])
-            minimiser = minimisers[m_name]
+            minimiser = iter_minimisers[m_name]
+
             xs = []
             losses = []
-            for _, y in zip(range(args.n_iter), minimiser.minimise(problem, ())):
+            for _, y in zip(range(args.n_iter), minimiser.iter_minimise(problem, ())):
                 xs.append(y.x.tolist())
                 losses.append(float(y.loss))
 
