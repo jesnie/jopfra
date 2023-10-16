@@ -23,5 +23,4 @@ if [[ $(git status --porcelain) ]]; then
        --body "Automatic update of requirements." \
        --reviewer jesnie \
        || true
-    gh pr merge -s --auto
 fi
