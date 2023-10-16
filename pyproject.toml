@@ -21,7 +21,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 GitPython = "<4,>=2.1"
-check_shapes = "<2,>=0.1.0"
+check_shapes = "<2,>=0.2.0"
 matplotlib = "<4,>=3.6"
 numpy = "<2,>=1.23"
 pandas = "<3,>=1.5"
@@ -34,7 +34,7 @@ typedpath = "<0.2,>=0.1.0"
 black = "<23.10,>=23.9"
 compreq = "<0.3.1,>=0.3.0"
 isort = "<5.13,>=5.12"
-mypy = "<1.6,>=1.5"
+mypy = "<1.7,>=1.6"
 pandas-stubs = "<3,>=1.5"
 pylint = "<3.1,>=3.0"
 pytest = "<7.5,>=7.4"
