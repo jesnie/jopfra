@@ -22,8 +22,13 @@ class MatplotlibPngFile(tp.TypedFile):
         plt.close(fig)
 
 
+class MiscDir(tp.TypedDir):
+    default_suffix = ""
+
+
 class ProblemMinimiserResultDir(tp.StructDir):
     result: tp.PandasCsvFile
+    plots: MiscDir
 
 
 class ProblemResultDir(tp.StructDir):
