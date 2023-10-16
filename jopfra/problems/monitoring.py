@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from check_shapes import check_shapes
 
+from jopfra.paths import MiscDir
 from jopfra.problems.api import Evaluation, Problem
 from jopfra.types import AnyNDArray
 
@@ -44,6 +45,12 @@ class LoggingProblem:
         t = time.perf_counter_ns()
         self.log.append((t - self.start_ns, y))
         return y
+
+    @check_shapes(
+        "x: [n_inputs]",
+    )
+    def plot(self, dest: MiscDir, x: AnyNDArray) -> None:
+        self.root.plot(dest, x)
 
     @check_shapes(
         "return: [n_calls]",

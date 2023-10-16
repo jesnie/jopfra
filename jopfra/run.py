@@ -159,6 +159,7 @@ def main() -> None:
 
             p_results[m_name] = pm_results
             log_problem_minimiser_results(pm_dest, pm_results)
+            problem.plot(pm_dest.plots, xs[-1])
 
         log_problem_results(p_dest, p_results)
 
