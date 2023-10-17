@@ -7,6 +7,7 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import typedpath as tp
+import typedpath.inspect as tpi
 from git.exc import InvalidGitRepositoryError
 from git.repo import Repo
 
@@ -24,6 +25,10 @@ class MatplotlibPngFile(tp.TypedFile):
 
 class MiscDir(tp.TypedDir):
     default_suffix = ""
+
+    def get(self, filename: str, t: type[tpi.TP], **kwargs: Any) -> tpi.TP:
+        args = tp.withargs(**kwargs)
+        return tpi.make(t, self.pretty_path() / filename, args)
 
 
 class ProblemMinimiserResultDir(tp.StructDir):

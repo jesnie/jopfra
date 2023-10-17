@@ -1,6 +1,9 @@
+from pathlib import Path
+
 import numpy as np
 import pytest
 
+from jopfra.paths import MiscDir
 from jopfra.problems.api import Problem, problems
 from jopfra.problems.utils import get_domain_corners, get_sobol_samples
 
@@ -54,3 +57,12 @@ def test_problem__optima(problem: Problem) -> None:
 
     assert min_baseline_loss >= min_optimal_loss
     np.testing.assert_allclose(optimal_y.loss, min_optimal_loss)
+
+
+@pytest.mark.parametrize("problem", problems.values(), ids=lambda p: p.name)
+def test_problem__plot(problem: Problem, tmp_path: Path) -> None:
+    if not problem.known_optima:
+        return
+
+    x = get_sobol_samples(problem, 1)[0]
+    problem.plot(MiscDir(tmp_path), x)  # Don't crash...

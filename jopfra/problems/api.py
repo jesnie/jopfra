@@ -151,7 +151,7 @@ def problem(
             np.asarray(domain_upper),
             [np.asarray(o) for o in known_optima],
             check_problem_shapes(func),
-            plot,
+            check_plot_shapes(plot),
         )
         problems[name] = p
         return p
