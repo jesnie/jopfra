@@ -52,28 +52,15 @@ class LoggingProblem:
     def plot(self, dest: MiscDir, x: AnyNDArray) -> None:
         self.root.plot(dest, x)
 
-    @check_shapes(
-        "return: [n_calls]",
-    )
-    def min_losses(self) -> AnyNDArray:
-        min_losses = [np.min(y.loss) for _, y in self.log]
-        return np.array(min_losses)
+    @property
+    def n_calls(self) -> int:
+        return len(self.log)
 
-    @check_shapes(
-        "return: [n_calls]",
-    )
-    def n_calls(self) -> AnyNDArray:
-        return np.arange(len(self.log)) + 1
-
-    @check_shapes(
-        "return: [n_calls]",
-    )
-    def n_evals(self) -> AnyNDArray:
+    @property
+    def n_evals(self) -> int:
         batch_size = [np.prod(y.shape, dtype=np.int32) for _, y in self.log]
-        return np.cumsum(batch_size)
+        return int(np.sum(batch_size))
 
-    @check_shapes(
-        "return: [n_calls]",
-    )
-    def times(self) -> AnyNDArray:
-        return np.array([t for t, _ in self.log])
+    @property
+    def time_ns(self) -> int:
+        return self.log[-1][0]

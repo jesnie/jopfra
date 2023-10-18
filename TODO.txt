@@ -1,5 +1,5 @@
 * Define some problems
-  - gpflow
+  - GPs
   - (small) neural networks
     - MNIST?
   - Problems with mixed dtypes?
@@ -14,8 +14,6 @@
   - own stuff
     - diff evo + gradients
     - CMA-ES + gradients?
-  - Torch optimisers?
-  - TF optimisers?
   - SciPy optimisers?
 * Run them against each other.
   - Better definition of how long to run

@@ -140,17 +140,23 @@ def main() -> None:
             problem = LoggingProblem(problems[p_name])
             minimiser = iter_minimisers[m_name]
 
+            n_calls = []
+            n_evals = []
+            times_ns = []
             xs = []
             losses = []
             for _, y in zip(range(args.n_iter), minimiser.iter_minimise(problem, ())):
+                n_calls.append(problem.n_calls)
+                n_evals.append(problem.n_evals)
+                times_ns.append(problem.time_ns)
                 xs.append(y.x.tolist())
                 losses.append(float(y.loss))
 
             pm_results = pd.DataFrame(
                 {
-                    "n_calls": problem.n_calls(),
-                    "n_evals": problem.n_evals(),
-                    "time_ns": problem.times(),
+                    "n_calls": n_calls,
+                    "n_evals": n_evals,
+                    "time_ns": times_ns,
                     "xs": xs,
                     "loss": losses,
                 }
