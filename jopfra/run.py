@@ -1,3 +1,4 @@
+import datetime as dt
 import sys
 from argparse import ArgumentParser
 from collections.abc import Mapping
@@ -97,12 +98,25 @@ def main() -> None:
         help=f"Minimisers for optimisation: Choose from {sorted(iter_minimisers)}",
     )
     parser.add_argument(
-        "--n_iter",
-        "--n-iter",
-        "-n",
-        default=100,
+        "--n_calls",
+        "--n-calls",
+        "-c",
         type=int,
-        help="Number of iterations to run.",
+        help="Max number of calls to solve the problem problem.",
+    )
+    parser.add_argument(
+        "--n_evals",
+        "--n-evals",
+        "-e",
+        type=int,
+        help="Max number of evaluations to solve the problem.",
+    )
+    parser.add_argument(
+        "--n_seconds",
+        "--n-seconds",
+        "-s",
+        type=int,
+        help="Max number of seconds to solve the problem.",
     )
     parser.add_argument(
         "--dest",
@@ -145,12 +159,19 @@ def main() -> None:
             times_ns = []
             xs = []
             losses = []
-            for _, y in zip(range(args.n_iter), minimiser.iter_minimise(problem, ())):
+            for y in minimiser.iter_minimise(problem, ()):
                 n_calls.append(problem.n_calls)
                 n_evals.append(problem.n_evals)
                 times_ns.append(problem.time_ns)
                 xs.append(y.x.tolist())
                 losses.append(float(y.loss))
+
+                if (
+                    (args.n_calls is not None and problem.n_calls >= args.n_calls)
+                    or (args.n_evals is not None and problem.n_evals >= args.n_evals)
+                    or (args.n_seconds is not None and (problem.time_ns / 1e9) >= args.n_seconds)
+                ):
+                    break
 
             pm_results = pd.DataFrame(
                 {
@@ -166,6 +187,10 @@ def main() -> None:
             p_results[m_name] = pm_results
             log_problem_minimiser_results(pm_dest, pm_results)
             problem.plot(pm_dest.plots, xs[-1])
+            print(f"  n_calls: {max(n_calls)}")
+            print(f"  n_evals: {max(n_evals)}")
+            print(f"  time: {dt.timedelta(seconds=1e-9*max(times_ns))}")
+            print(f"  loss: {min(losses)}")
 
         log_problem_results(p_dest, p_results)
 
