@@ -1,6 +1,7 @@
 from typing import overload
 
 import numpy as np
+import torch as tc
 from check_shapes import check_shapes
 
 from jopfra.problems.api import Evaluation
@@ -28,6 +29,10 @@ class Flattener:
         ...
 
     @overload
+    def flatten(self, y: tc.Tensor) -> tc.Tensor:
+        ...
+
+    @overload
     def flatten(self, y: Evaluation) -> Evaluation:
         ...
 
@@ -35,17 +40,28 @@ class Flattener:
         "y: [batch_shape..., item_shape...]",
         "return: [prod_batch_shape, item_shape...]",
     )
-    def flatten(self, y: Evaluation | AnyNDArray) -> Evaluation | AnyNDArray:
+    def flatten(
+        self, y: AnyNDArray | tc.Tensor | Evaluation
+    ) -> AnyNDArray | tc.Tensor | Evaluation:
         if isinstance(y, Evaluation):
             return Evaluation(
                 y.problem, self.flatten(y.x), self.flatten(y.loss), self.flatten(y.grads)
             )
+
+        if isinstance(y, tc.Tensor):
+            assert self.shape == y.shape[: self.dim], (self.shape, y.shape)
+            return tc.reshape(y, (self.size,) + y.shape[self.dim :])
+
         assert isinstance(y, np.ndarray), y
         assert self.shape == y.shape[: self.dim], (self.shape, y.shape)
         return np.reshape(y, (self.size,) + y.shape[self.dim :])
 
     @overload
     def unflatten(self, y: AnyNDArray) -> AnyNDArray:
+        ...
+
+    @overload
+    def unflatten(self, y: tc.Tensor) -> tc.Tensor:
         ...
 
     @overload
@@ -56,11 +72,18 @@ class Flattener:
         "y: [prod_batch_shape, item_shape...]",
         "return: [batch_shape..., item_shape...]",
     )
-    def unflatten(self, y: Evaluation | AnyNDArray) -> Evaluation | AnyNDArray:
+    def unflatten(
+        self, y: AnyNDArray | tc.Tensor | Evaluation
+    ) -> AnyNDArray | tc.Tensor | Evaluation:
         if isinstance(y, Evaluation):
             return Evaluation(
                 y.problem, self.unflatten(y.x), self.unflatten(y.loss), self.unflatten(y.grads)
             )
+
+        if isinstance(y, tc.Tensor):
+            assert self.size == y.shape[0]
+            return tc.reshape(y, self.shape + y.shape[1:])
+
         assert isinstance(y, np.ndarray), y
         assert self.size == y.shape[0]
         return np.reshape(y, self.shape + y.shape[1:])
