@@ -2,14 +2,17 @@
 
 set -xe
 
+branch=compreq
+
 git fetch origin main
 git checkout main
 git pull --rebase origin main
-if ! git checkout -b jopfra; then
-    git branch -D jopfra
-    git checkout -b jopfra
+if ! git checkout -b ${branch}; then
+    git branch -D ${branch}
+    git checkout -b ${branch}
 fi
 poetry run python -m requirements
+poetry run task format
 if [[ $(git status --porcelain) ]]; then
     poetry update
     git \
@@ -17,7 +20,7 @@ if [[ $(git status --porcelain) ]]; then
         -c "user.email=none" \
         commit \
         -am "Update requirements."
-    git push origin +jopfra
+    git push origin +${branch}
     gh pr create \
        --title "Update requirements" \
        --body "Automatic update of requirements." \
