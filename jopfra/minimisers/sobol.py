@@ -3,9 +3,9 @@ from typing import Final
 
 import torch as tc
 
+from jopfra.api import Evaluation, Problem
 from jopfra.flatten import Flattener
 from jopfra.minimisers.api import IterMinimiser, SingleMinimiser
-from jopfra.problems.api import Evaluation, Problem
 from jopfra.types import AnyNDArray
 
 

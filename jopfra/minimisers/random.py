@@ -3,8 +3,8 @@ from typing import Final
 
 import numpy as np
 
+from jopfra.api import Evaluation, Problem
 from jopfra.minimisers.api import IterMinimiser, SingleMinimiser
-from jopfra.problems.api import Evaluation, Problem
 
 
 class Random(IterMinimiser, SingleMinimiser):

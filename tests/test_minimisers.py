@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
+from jopfra.api import Evaluation
 from jopfra.minimisers.api import Stop, StoppingCriteria, iter_minimisers
 from jopfra.minimisers.stopping_criteria import CallCountStoppingCriteria
-from jopfra.problems.api import Evaluation
 from jopfra.problems.quadratic import make_quadratic
 
 

@@ -1,5 +1,5 @@
+from jopfra.api import Evaluation
 from jopfra.minimisers.api import Stop, StoppingCriteria
-from jopfra.problems.api import Evaluation
 
 
 class CallCountStoppingCriteria(StoppingCriteria):

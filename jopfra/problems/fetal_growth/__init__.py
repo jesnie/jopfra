@@ -8,8 +8,9 @@ import pandas as pd
 import torch as tc
 from check_shapes import check_shapes
 
+from jopfra.api import Problem
 from jopfra.paths import MatplotlibPngFile, MiscDir
-from jopfra.problems.api import Problem, torch_problem
+from jopfra.problems.api import torch_problem
 
 
 @check_shapes(

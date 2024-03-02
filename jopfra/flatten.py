@@ -4,7 +4,7 @@ import numpy as np
 import torch as tc
 from check_shapes import check_shapes
 
-from jopfra.problems.api import Evaluation
+from jopfra.api import Evaluation
 from jopfra.types import AnyNDArray
 
 

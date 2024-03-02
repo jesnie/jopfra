@@ -4,10 +4,10 @@ from typing import Callable
 import numpy as np
 from check_shapes import check_shapes
 
+from jopfra.api import Evaluation, Problem
 from jopfra.flatten import Flattener
 from jopfra.minimisers.api import IterMinimiser, SingleMinimiser, iter_minimisers
 from jopfra.minimisers.sobol import sobol
-from jopfra.problems.api import Evaluation, Problem
 from jopfra.problems.utils import wrap_domain
 from jopfra.types import AnyNDArray
 

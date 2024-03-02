@@ -3,11 +3,11 @@ from typing import Final
 
 import numpy as np
 
+from jopfra.api import Evaluation, Problem
 from jopfra.flatten import Flattener
 from jopfra.minimisers.api import IterMinimiser, SingleMinimiser, iter_minimisers
 from jopfra.minimisers.random import random
 from jopfra.minimisers.sobol import sobol
-from jopfra.problems.api import Evaluation, Problem
 
 
 class SingleMin(SingleMinimiser):

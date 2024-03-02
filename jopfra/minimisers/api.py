@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from typing import Callable, TypeAlias
 
-from jopfra.problems.api import Evaluation, Problem
+from jopfra.api import Evaluation, Problem
 
 
 class SingleMinimiser(ABC):

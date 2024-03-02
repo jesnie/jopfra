@@ -1,9 +1,9 @@
 from collections.abc import Iterator
 
+from jopfra.api import Evaluation, Problem
 from jopfra.minimisers.api import IterMinimiser, SingleMinimiser, iter_minimisers
 from jopfra.minimisers.min import IterMin, sobol_min_init
 from jopfra.minimisers.sobol import sobol
-from jopfra.problems.api import Evaluation, Problem
 from jopfra.problems.utils import wrap_domain
 
 
