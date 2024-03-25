@@ -39,37 +39,30 @@ class Evaluation:
 
 class Problem(Protocol):
     @property
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
     @property
-    def n_inputs(self) -> int:
-        ...
+    def n_inputs(self) -> int: ...
 
     @property
-    def domain_lower(self) -> AnyNDArray:
-        ...
+    def domain_lower(self) -> AnyNDArray: ...
 
     @property
-    def domain_upper(self) -> AnyNDArray:
-        ...
+    def domain_upper(self) -> AnyNDArray: ...
 
     @property
-    def known_optima(self) -> Collection[AnyNDArray]:
-        ...
+    def known_optima(self) -> Collection[AnyNDArray]: ...
 
     @check_shapes(
         "x: [batch..., n_inputs]",
         "return: [batch...]",
     )
-    def __call__(self, x: AnyNDArray) -> Evaluation:
-        ...
+    def __call__(self, x: AnyNDArray) -> Evaluation: ...
 
     @check_shapes(
         "x: [n_inputs]",
     )
-    def plot(self, dest: MiscDir, x: AnyNDArray) -> None:
-        ...
+    def plot(self, dest: MiscDir, x: AnyNDArray) -> None: ...
 
 
 problems: dict[str, Problem] = {}
@@ -83,12 +76,10 @@ check_problem_shapes = check_shapes(
 
 
 class ProblemFunc(Protocol):
-    def __call__(self, x: AnyNDArray) -> tuple[AnyNDArray, AnyNDArray]:
-        ...
+    def __call__(self, x: AnyNDArray) -> tuple[AnyNDArray, AnyNDArray]: ...
 
     @property
-    def __name__(self) -> str:
-        ...
+    def __name__(self) -> str: ...
 
 
 check_plot_shapes = check_shapes(
@@ -97,8 +88,7 @@ check_plot_shapes = check_shapes(
 
 
 class PlotFunc(Protocol):
-    def __call__(self, dest: MiscDir, x: AnyNDArray) -> None:
-        ...
+    def __call__(self, dest: MiscDir, x: AnyNDArray) -> None: ...
 
 
 @dataclass(order=True, frozen=True)
@@ -160,17 +150,14 @@ def problem(
 
 
 class TorchProblemFunc(Protocol):
-    def __call__(self, x: tc.Tensor) -> tc.Tensor:
-        ...
+    def __call__(self, x: tc.Tensor) -> tc.Tensor: ...
 
     @property
-    def __name__(self) -> str:
-        ...
+    def __name__(self) -> str: ...
 
 
 class TorchPlotFunc(Protocol):
-    def __call__(self, dest: MiscDir, x: tc.Tensor) -> None:
-        ...
+    def __call__(self, dest: MiscDir, x: tc.Tensor) -> None: ...
 
 
 def torch_problem(
