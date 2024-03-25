@@ -25,16 +25,13 @@ class Flattener:
         return int(np.prod(self._batch_shape))
 
     @overload
-    def flatten(self, y: AnyNDArray) -> AnyNDArray:
-        ...
+    def flatten(self, y: AnyNDArray) -> AnyNDArray: ...
 
     @overload
-    def flatten(self, y: tc.Tensor) -> tc.Tensor:
-        ...
+    def flatten(self, y: tc.Tensor) -> tc.Tensor: ...
 
     @overload
-    def flatten(self, y: Evaluation) -> Evaluation:
-        ...
+    def flatten(self, y: Evaluation) -> Evaluation: ...
 
     @check_shapes(
         "y: [batch_shape..., item_shape...]",
@@ -57,16 +54,13 @@ class Flattener:
         return np.reshape(y, (self.size,) + y.shape[self.dim :])
 
     @overload
-    def unflatten(self, y: AnyNDArray) -> AnyNDArray:
-        ...
+    def unflatten(self, y: AnyNDArray) -> AnyNDArray: ...
 
     @overload
-    def unflatten(self, y: tc.Tensor) -> tc.Tensor:
-        ...
+    def unflatten(self, y: tc.Tensor) -> tc.Tensor: ...
 
     @overload
-    def unflatten(self, y: Evaluation) -> Evaluation:
-        ...
+    def unflatten(self, y: Evaluation) -> Evaluation: ...
 
     @check_shapes(
         "y: [prod_batch_shape, item_shape...]",

@@ -9,8 +9,7 @@ from jopfra.problems.api import Evaluation, Problem
 
 class SingleMinimiser(ABC):
     @abstractmethod
-    def single_minimise(self, problem: Problem, batch_shape: tuple[int, ...]) -> Evaluation:
-        ...
+    def single_minimise(self, problem: Problem, batch_shape: tuple[int, ...]) -> Evaluation: ...
 
 
 single_minimisers: dict[str, SingleMinimiser] = {}
@@ -21,8 +20,7 @@ Stop: TypeAlias = Callable[[Evaluation], bool]
 
 class StoppingCriteria(ABC):
     @abstractmethod
-    def stop(self) -> Stop:
-        ...
+    def stop(self) -> Stop: ...
 
 
 class IterMinimiserAdapter(SingleMinimiser):
@@ -43,8 +41,9 @@ class IterMinimiserAdapter(SingleMinimiser):
 
 class IterMinimiser(ABC):
     @abstractmethod
-    def iter_minimise(self, problem: Problem, batch_shape: tuple[int, ...]) -> Iterator[Evaluation]:
-        ...
+    def iter_minimise(
+        self, problem: Problem, batch_shape: tuple[int, ...]
+    ) -> Iterator[Evaluation]: ...
 
     def to_single(self, criteria: StoppingCriteria) -> IterMinimiserAdapter:
         return IterMinimiserAdapter(self, criteria)
