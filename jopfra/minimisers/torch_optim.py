@@ -29,7 +29,7 @@ class TorchOptimiser(IterMinimiser):
             np_x = x.detach().numpy()
             np_x = wrap_domain(problem, np_x)
             with tc.no_grad():
-                x[...] = tc.tensor(np_x, dtype=x.dtype)  # type: ignore[index]
+                x[...] = tc.tensor(np_x, dtype=x.dtype)
             y = problem(np_x)
 
 
@@ -66,7 +66,7 @@ class CallbackTorchOptimiser(IterMinimiser):
                 np_x = wrap_domain(problem, np_x)
                 y = problem(np_x)
                 with tc.no_grad():
-                    x[...] = tc.tensor(np_x, dtype=x.dtype)  # type: ignore[index]
+                    x[...] = tc.tensor(np_x, dtype=x.dtype)
                     x.grad = tc.tensor(y.grads, dtype=x.dtype)
                 return float(np.sum(y.loss))
 
