@@ -26,9 +26,7 @@ def _load_data() -> tuple[tc.Tensor, tc.Tensor, tc.Tensor, tc.Tensor]:
 
     size_df = pd.read_csv(root / "size.csv")
     size_df["date"] = pd.to_datetime(size_df["date"])
-    size_df["age_weeks"] = (size_df.date - conception_date) / dt.timedelta(
-        weeks=1
-    )  # type: ignore[operator]
+    size_df["age_weeks"] = (size_df.date - conception_date) / dt.timedelta(weeks=1)
     size_age_weeks = tc.as_tensor(size_df.age_weeks)
     size_weight_g = tc.as_tensor(size_df.weight_g)
 

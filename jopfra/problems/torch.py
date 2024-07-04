@@ -58,7 +58,7 @@ def make_torch_nn_problem(
                 for parameter in model.parameters():
                     k = j + tc.numel(parameter)
                     xp = np.reshape(flat_x[i, j:k], parameter.shape)
-                    parameter[...] = tc.tensor(xp, dtype=parameter.dtype)  # type: ignore[index]
+                    parameter[...] = tc.tensor(xp, dtype=parameter.dtype)
                     j = k
             model.zero_grad()
             loss = loss_fn()

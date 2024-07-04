@@ -44,7 +44,7 @@ def log_problem_results(p_dest: ProblemResultDir, p_results: Mapping[str, pd.Dat
         pass
 
     def setup_truncated(ax: Axes) -> None:
-        data = np.concatenate([l.get_ydata() for l in ax.lines])  # type: ignore[attr-defined]
+        data = np.concatenate([l.get_ydata() for l in ax.lines])
         lower = np.min(data)
         data = data[data != lower]
         upper = np.minimum(np.max(data), 10 * np.quantile(data, 0.1))
