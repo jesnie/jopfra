@@ -134,6 +134,9 @@ def main() -> None:
         args.minimisers,
         sorted(iter_minimisers),
     )
+    assert (
+        (args.n_calls is not None) or (args.n_evals is not None) or (args.n_seconds is not None)
+    ), args
 
     dest = setup_dest(args.dest)
     dest.metadata.write(

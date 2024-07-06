@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import numpy as np
 
-from jopfra.problems.api import Problem
+from jopfra.api import Problem
 from jopfra.problems.utils import (
     clip_domain,
     get_domain_corners,

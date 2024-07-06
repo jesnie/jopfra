@@ -4,7 +4,8 @@ import numpy as np
 import torch as tc
 from check_shapes import check_shapes
 
-from jopfra.problems.api import Problem, torch_problem
+from jopfra.api import Problem
+from jopfra.problems.api import torch_problem
 from jopfra.problems.utils import pretty_exp
 
 

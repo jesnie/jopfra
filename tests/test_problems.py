@@ -3,8 +3,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from jopfra.api import Problem
 from jopfra.paths import MiscDir
-from jopfra.problems.api import Problem, problems
+from jopfra.problems.api import problems
 from jopfra.problems.utils import get_domain_corners, get_sobol_samples
 
 

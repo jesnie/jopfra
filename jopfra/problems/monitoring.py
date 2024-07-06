@@ -5,8 +5,8 @@ from dataclasses import dataclass, field
 import numpy as np
 from check_shapes import check_shapes
 
+from jopfra.api import Evaluation, Problem
 from jopfra.paths import MiscDir
-from jopfra.problems.api import Evaluation, Problem
 from jopfra.types import AnyNDArray
 
 
