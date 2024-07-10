@@ -12,34 +12,41 @@ from jopfra.api import Problem
 from jopfra.paths import MatplotlibPngFile, MiscDir
 from jopfra.problems.api import torch_problem
 
+ROOT = Path(__file__).parent
+
 
 @check_shapes(
     "return[0]: [n_data]",
     "return[1]: [n_data]",
-    "return[2]: [n_quantiles]",
-    "return[3]: [n_quantiles, degree]",
 )
-def _load_data() -> tuple[tc.Tensor, tc.Tensor, tc.Tensor, tc.Tensor]:
-    root = Path(__file__).parent
-
-    due_date = dt.datetime(2023, 11, 7)
+def _load_size_data() -> tuple[tc.Tensor, tc.Tensor]:
+    due_date = dt.datetime(2000, 11, 7)
     conception_date = due_date - dt.timedelta(weeks=40)
 
-    size_df = pd.read_csv(root / "size.csv")
+    size_df = pd.read_csv(ROOT / "size.csv")
     size_df["date"] = pd.to_datetime(size_df["date"])
     size_df["age_weeks"] = (size_df.date - conception_date) / dt.timedelta(weeks=1)
     size_age_weeks = tc.as_tensor(size_df.age_weeks)
     size_weight_g = tc.as_tensor(size_df.weight_g)
 
-    coeffs_df = pd.read_csv(root / "coefficientsGlobalV3.csv").set_index(["fetalDimension"])
+    return size_age_weeks, size_weight_g
+
+
+@check_shapes(
+    "return[0]: [n_quantiles]",
+    "return[1]: [n_quantiles, degree]",
+)
+def _load_coeff_data() -> tuple[tc.Tensor, tc.Tensor]:
+    coeffs_df = pd.read_csv(ROOT / "coefficientsGlobalV3.csv").set_index(["fetalDimension"])
     coeffs = tc.tensor(coeffs_df.loc["EFW"].values)
     coeffs_index = coeffs[:, 0]
     coeffs = coeffs[:, 1:]
 
-    return size_age_weeks, size_weight_g, coeffs_index, coeffs
+    return coeffs_index, coeffs
 
 
-_size_age_weeks, _size_weight_g, _coeffs_index, _coeffs = _load_data()
+_size_age_weeks, _size_weight_g = _load_size_data()
+_coeffs_index, _coeffs = _load_coeff_data()
 
 
 @check_shapes(
