@@ -1,9 +1,12 @@
 * Define some problems
   - GPs
+  - Polynomials
   - (small) neural networks
     - MNIST?
   - Problems with mixed dtypes?
   - Priors?
+  - Tune problems/models
+  - Daycare position
 * Define some minimisers
   - diff evo
   - Grid Search implemented in GridSampler

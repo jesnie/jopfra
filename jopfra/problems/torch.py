@@ -13,7 +13,20 @@ from jopfra.api import Problem
 from jopfra.flatten import Flattener
 from jopfra.paths import MatplotlibPngFile, MiscDir
 from jopfra.problems.api import problem
-from jopfra.problems.datasets import DatasetFactory, get_dataset, sin_dataset
+from jopfra.problems.datasets import (
+    DatasetFactory,
+    baby_size_dataset,
+    fetal_size_dataset,
+    get_dataset,
+    gpflow_example_1_dataset,
+    gpflow_example_2_dataset,
+    gpflow_example_3_dataset,
+    gpflow_example_4_dataset,
+    gpflow_example_5_dataset,
+    gpflow_example_6_dataset,
+    mauna_loa_co2_dataset,
+    sin_dataset,
+)
 from jopfra.types import AnyNDArray
 
 
@@ -134,7 +147,9 @@ class NeuralNet(ProblemModule):
     @inherit_check_shapes
     def loss(self) -> tc.Tensor:
         ds = get_dataset(self.dataset_factory)
-        return F.mse_loss(self(ds.x), ds.y)
+        x = ds.x.float()
+        y = ds.y.float()
+        return F.mse_loss(self(x), y)
 
     def plot(self, dest: MiscDir) -> None:
         ds = get_dataset(self.dataset_factory)
@@ -146,13 +161,26 @@ class NeuralNet(ProblemModule):
         x_max = tc.max(ds.x).item()
         x_delta = x_max - x_min
         x_plot = tc.linspace(x_min - 0.1 * x_delta, x_max + 0.1 * x_delta, 200)[:, None]
+
+        y_min = tc.min(ds.y).item()
+        y_max = tc.max(ds.y).item()
+        y_delta = y_max - y_min
+        y_min -= 0.1 * y_delta
+        y_max += 0.1 * y_delta
         y_plot = self(x_plot).detach()
 
         png = dest.get("pred.png", MatplotlibPngFile)
-        with png.subplots(1, 1, figsize=(12, 16)) as (_, ax):
-            ax.set_title(f"L: {self.loss().item():.4}")
-            ax.plot(x_plot, y_plot)
-            ax.scatter(ds.x, ds.y)
+        with png.subplots(1, 2, figsize=(20, 12)) as (_, axs):
+            ax1, ax2 = axs
+
+            ax1.set_title(f"L: {self.loss().item():.4}")
+            ax1.plot(x_plot, y_plot)
+            ax1.scatter(ds.x, ds.y)
+            ax1.set_ylim(y_min, y_max)
+
+            ax2.set_title(f"L: {self.loss().item():.4}")
+            ax2.plot(x_plot, y_plot)
+            ax2.scatter(ds.x, ds.y)
 
     @staticmethod
     def factory(
@@ -162,3 +190,12 @@ class NeuralNet(ProblemModule):
 
 
 make_torch_module_problem(NeuralNet.factory(sin_dataset))
+make_torch_module_problem(NeuralNet.factory(fetal_size_dataset))
+make_torch_module_problem(NeuralNet.factory(baby_size_dataset))
+make_torch_module_problem(NeuralNet.factory(mauna_loa_co2_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_1_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_2_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_3_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_4_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_5_dataset))
+make_torch_module_problem(NeuralNet.factory(gpflow_example_6_dataset))
