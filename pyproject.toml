@@ -17,29 +17,30 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 [tool.poetry.dependencies]
 GitPython = "<4,>=2.1"
 check_shapes = "<2,>=0.2.0"
 matplotlib = "<4,>=3.7"
-numpy = "<3,>=1.25"
+numpy = "<3,>=1.26"
 pandas = "<3,>=2.0"
 python = "<4,>=3.10"
-torch = "<3,>=2.0"
+torch = "<3,>=2.1"
 typedpath = "<0.2,>=0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "<24.5,>=24.4"
-compreq = "<0.3.1,>=0.3.0"
+black = "<24.11,>=24.10"
+compreq = "<0.3.2,>=0.3.1"
 isort = "<5.14,>=5.13"
-mypy = "<1.11,>=1.10"
+mypy = "<1.13,>=1.12"
 pandas-stubs = "<3,>=2.0"
-pylint = "<3.3,>=3.2"
-pytest = "<8.3,>=8.2"
+pylint = "<3.4,>=3.3"
+pytest = "<8.4,>=8.3"
 taskipy = "<1.14,>=1.13"
-tomlkit = "<0.12.6,>=0.12.5"
+tomlkit = "<0.13.3,>=0.13.2"
 
 [build-system]
 requires = ["poetry-core"]
