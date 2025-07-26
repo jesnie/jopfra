@@ -38,7 +38,7 @@ def test_get_sobol_samples() -> None:
     problem.domain_lower = np.array([-2.0, -1.0, 1.0])
     problem.domain_upper = np.array([-1.0, 1.0, 2.0])
     x = get_sobol_samples(problem, 10)
-    assert (10, 3) == x.shape
+    assert x.shape == (10, 3)
     assert np.all((problem.domain_lower <= x) & (x <= problem.domain_upper))
 
 
@@ -97,10 +97,10 @@ def test_wrap_domain() -> None:
 
 
 def test_pretty_exp() -> None:
-    assert [] == list(pretty_exp(0))
-    assert [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] == list(pretty_exp(10))
+    assert list(pretty_exp(0)) == []
+    assert list(pretty_exp(10)) == [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
     l = []
-    for _, i in zip(range(5), pretty_exp()):
+    for _, i in zip(range(5), pretty_exp(), strict=False):
         l.append(i)
-    assert [1, 2, 5, 10, 20] == l
+    assert l == [1, 2, 5, 10, 20]

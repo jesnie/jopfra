@@ -1,3 +1,5 @@
+# ruff: noqa: ERA001
+
 # http://www.sfu.ca/~ssurjano/index.html
 from collections.abc import Collection, Sequence
 from math import pi
@@ -151,7 +153,7 @@ def holder_table(x: tc.Tensor) -> tc.Tensor:
 )
 def langermann_2d(x: tc.Tensor) -> tc.Tensor:
     cvec = tc.tensor([1.0, 2.0, 5.0, 2.0, 3.0])
-    A = tc.tensor(
+    A = tc.tensor(  # noqa: N806
         [
             [3.0, 5.0],
             [5.0, 2.0],
@@ -550,7 +552,7 @@ def make_dixon_price(d: int) -> Problem:
     @torch_problem(
         domain_lower=[-10.0 for _ in range(d)],
         domain_upper=[10.0 for _ in range(d)],
-        known_optima=[],  # TODO
+        known_optima=[],  # TODO  # noqa: TD004
         name=f"dixon_price_{d}d",
     )
     def dixon_price(x: tc.Tensor) -> tc.Tensor:
@@ -798,8 +800,8 @@ def goldstein_price(x: tc.Tensor) -> tc.Tensor:
 def make_hartmann(
     name: str,
     alpha: AnyNDArray,
-    A: AnyNDArray,
-    P: AnyNDArray,
+    A: AnyNDArray,  # noqa: N803
+    P: AnyNDArray,  # noqa: N803
     known_optima: Collection[AnyNDArray | Sequence[float]] = (),
 ) -> Problem:
     _, d = A.shape
@@ -812,8 +814,8 @@ def make_hartmann(
     )
     def hartmann(x: tc.Tensor) -> tc.Tensor:
         alpha_ = tc.tensor(alpha, dtype=x.dtype)
-        A_ = tc.tensor(A, dtype=x.dtype)
-        P_ = tc.tensor(P, dtype=x.dtype)
+        A_ = tc.tensor(A, dtype=x.dtype)  # noqa: N806
+        P_ = tc.tensor(P, dtype=x.dtype)  # noqa: N806
         inner = tc.sum(A_ * tc.pow((x[..., None, :] - P_), 2.0), dim=-1)
         outer = tc.sum(alpha_ * tc.exp(-inner), dim=-1)
         return -outer
@@ -922,7 +924,7 @@ def make_powell(d: int) -> Problem:
         name=f"powell_{d}d",
     )
     def powell(x: tc.Tensor) -> tc.Tensor:
-        x = tc.reshape(x, x.shape[:-1] + (-1, 4))
+        x = tc.reshape(x, (*x.shape[:-1], -1, 4))
         x1 = x[..., 0]
         x2 = x[..., 1]
         x3 = x[..., 2]
@@ -947,7 +949,7 @@ for _d in pretty_exp(9):
 )
 def shekel(x: tc.Tensor) -> tc.Tensor:
     b = 0.1 * tc.tensor([1, 2, 2, 4, 4, 6, 3, 7, 5, 5], dtype=x.dtype)
-    C = tc.tensor(
+    C = tc.tensor(  # noqa: N806
         [
             [4.0, 1.0, 8.0, 6.0, 3.0, 2.0, 5.0, 8.0, 6.0, 7.0],
             [4.0, 1.0, 8.0, 6.0, 7.0, 9.0, 3.0, 1.0, 2.0, 3.6],

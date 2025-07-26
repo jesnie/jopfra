@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Collection, Sequence
+from collections.abc import Callable, Collection, Sequence
 from dataclasses import dataclass
 from functools import wraps
-from typing import Callable, Protocol
+from typing import Protocol
 
 import numpy as np
 import torch as tc
@@ -72,13 +72,16 @@ class FuncProblem:
         return n_inputs
 
 
+NULL_PLOT_FUNC: PlotFunc = check_plot_shapes(lambda dest, x: None)
+
+
 def problem(
     domain_lower: AnyNDArray | Sequence[float],
     domain_upper: AnyNDArray | Sequence[float],
     known_optima: Collection[AnyNDArray | Sequence[float]],
     *,
     name: str | None = None,
-    plot: PlotFunc = check_plot_shapes(lambda dest, x: None),
+    plot: PlotFunc = NULL_PLOT_FUNC,
 ) -> Callable[[ProblemFunc], Problem]:
     def _wrap(func: ProblemFunc) -> Problem:
         nonlocal name
@@ -108,13 +111,16 @@ class TorchPlotFunc(Protocol):
     def __call__(self, dest: MiscDir, x: tc.Tensor) -> None: ...
 
 
+NULL_TORCH_PLOT_FUNC: TorchPlotFunc = check_plot_shapes(lambda dest, x: None)
+
+
 def torch_problem(
     domain_lower: AnyNDArray | Sequence[float],
     domain_upper: AnyNDArray | Sequence[float],
     known_optima: Collection[AnyNDArray | Sequence[float]],
     *,
     name: str | None = None,
-    plot: TorchPlotFunc = check_plot_shapes(lambda dest, x: None),
+    plot: TorchPlotFunc = NULL_TORCH_PLOT_FUNC,
 ) -> Callable[[TorchProblemFunc], Problem]:
     def _wrap(func: TorchProblemFunc) -> Problem:
         @wraps(func)

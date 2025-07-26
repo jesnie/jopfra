@@ -1,7 +1,8 @@
+from collections.abc import Callable
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Callable, TypeAlias
+from typing import TypeAlias
 
 import pandas as pd
 import torch as tc
@@ -55,8 +56,7 @@ def sin_dataset() -> Dataset:
 
 
 def fetal_size_dataset() -> Dataset:
-    # pylint: disable=import-outside-toplevel
-    from jopfra.problems.fetal_growth import _size_age_weeks, _size_weight_g
+    from jopfra.problems.fetal_growth import _size_age_weeks, _size_weight_g  # noqa: PLC0415
 
     x = _size_age_weeks[:, None]
     y = _size_weight_g[:, None]
