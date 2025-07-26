@@ -14,9 +14,9 @@ def test_minimiser__batch_shape(minimiser_name: str) -> None:
 
     y = minimiser.to_single(CallCountStoppingCriteria(1)).single_minimise(problem, (4, 2))
 
-    assert (4, 2) == y.shape
-    assert 3 == y.n_inputs
-    assert (4, 2, 3) == y.x.shape
+    assert y.shape == (4, 2)
+    assert y.n_inputs == 3
+    assert y.x.shape == (4, 2, 3)
 
 
 @pytest.mark.parametrize("minimiser_name", iter_minimisers)

@@ -1,9 +1,8 @@
 import datetime as dt
 import sys
 from argparse import ArgumentParser
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
-from typing import Callable
 
 import numpy as np
 import pandas as pd
@@ -22,7 +21,7 @@ def log_problem_minimiser_results(
 
 
 def log_problem_results(p_dest: ProblemResultDir, p_results: Mapping[str, pd.DataFrame]) -> None:
-    loss_plots: tuple[tuple[str, str, Callable[[pd.DataFrame], "pd.Series[float]"]], ...] = (
+    loss_plots: tuple[tuple[str, str, Callable[[pd.DataFrame], pd.Series[float]]], ...] = (
         (
             "Loss vs problem calls.",
             "Number of calls to the problem.",
@@ -60,9 +59,9 @@ def log_problem_results(p_dest: ProblemResultDir, p_results: Mapping[str, pd.Dat
     }
 
     with p_dest.plots.subplots(len(loss_plots), len(setup_axs), figsize=(20.0, 25.0)) as (fig, axs):
-        for loss_plot, loss_axs in zip(loss_plots, axs):
+        for loss_plot, loss_axs in zip(loss_plots, axs, strict=False):
             title, x_label, x_fn = loss_plot
-            for (title_suffix, setup_ax), loss_ax in zip(setup_axs.items(), loss_axs):
+            for (title_suffix, setup_ax), loss_ax in zip(setup_axs.items(), loss_axs, strict=False):
                 for m_name, pm_results in p_results.items():
                     loss_ax.plot(
                         x_fn(pm_results),
@@ -192,7 +191,7 @@ def main() -> None:
             problem.plot(pm_dest.plots, xs[-1])
             print(f"  n_calls: {max(n_calls)}")
             print(f"  n_evals: {max(n_evals)}")
-            print(f"  time: {dt.timedelta(seconds=1e-9*max(times_ns))}")
+            print(f"  time: {dt.timedelta(seconds=1e-9 * max(times_ns))}")
             print(f"  loss: {min(losses)}")
 
         log_problem_results(p_dest, p_results)

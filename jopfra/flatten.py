@@ -1,3 +1,4 @@
+# ruff: noqa: RUF005
 from typing import overload
 
 import numpy as np

@@ -1,5 +1,5 @@
-from collections.abc import Iterator
-from typing import Callable, Iterable, TypeAlias
+from collections.abc import Callable, Iterable, Iterator
+from typing import TypeAlias
 
 import numpy as np
 import torch as tc

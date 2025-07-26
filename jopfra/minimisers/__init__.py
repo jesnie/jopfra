@@ -1,4 +1,5 @@
-import jopfra.minimisers.diff_evo  # pylint: disable=unused-import
-import jopfra.minimisers.grad_desc  # pylint: disable=unused-import
-import jopfra.minimisers.min  # pylint: disable=unused-import
-import jopfra.minimisers.torch_optim  # pylint: disable=unused-import
+# ruff: noqa: F401
+import jopfra.minimisers.diff_evo
+import jopfra.minimisers.grad_desc
+import jopfra.minimisers.min
+import jopfra.minimisers.torch_optim

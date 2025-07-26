@@ -14,10 +14,10 @@ class Random(IterMinimiser, SingleMinimiser):
     def iter_minimise(self, problem: Problem, batch_shape: tuple[int, ...]) -> Iterator[Evaluation]:
         rng = np.random.default_rng(self._seed)
         while True:
-            x = rng.random(batch_shape + (problem.n_inputs,))
+            x = rng.random((*batch_shape, problem.n_inputs))
             x *= problem.domain_upper - problem.domain_lower
             x += problem.domain_lower
-            x = np.reshape(x, batch_shape + (problem.n_inputs,))
+            x = np.reshape(x, (*batch_shape, problem.n_inputs))
             y = problem(x)
             yield y
 

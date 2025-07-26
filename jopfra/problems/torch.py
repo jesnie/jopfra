@@ -1,13 +1,13 @@
 from abc import abstractmethod
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from functools import lru_cache
-from typing import Callable, TypeAlias
+from typing import TypeAlias
 
 import numpy as np
 import torch as tc
 from check_shapes import check_shapes, inherit_check_shapes
 from torch import nn
-from torch.nn import functional as F
+from torch.nn import functional as F  # noqa: N812
 
 from jopfra.api import Problem
 from jopfra.flatten import Flattener
@@ -123,11 +123,11 @@ def make_torch_module_problem(
 
 
 class NeuralNet(ProblemModule):
-    def __init__(self, dataset_factory: DatasetFactory, hidden: Sequence[int]):
+    def __init__(self, dataset_factory: DatasetFactory, hidden: Sequence[int]) -> None:
         ds = get_dataset(dataset_factory)
         super().__init__(f"{ds.name}_nn_{'_'.join(str(i) for i in hidden)}")
 
-        layers = [ds.n_inputs] + list(hidden) + [ds.n_outputs]
+        layers = [ds.n_inputs, *hidden, ds.n_outputs]
 
         self.dataset_factory = dataset_factory
         self.layers = nn.ModuleList(
@@ -142,7 +142,7 @@ class NeuralNet(ProblemModule):
         for l in self.layers[:-1]:
             x = F.relu(l(x))
         x = self.layers[-1](x)
-        return x
+        return x  # noqa: RET504
 
     @inherit_check_shapes
     def loss(self) -> tc.Tensor:

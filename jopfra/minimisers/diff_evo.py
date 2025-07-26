@@ -1,5 +1,4 @@
-from collections.abc import Iterator
-from typing import Callable
+from collections.abc import Callable, Iterator
 
 import numpy as np
 from check_shapes import check_shapes
@@ -17,7 +16,7 @@ from jopfra.types import AnyNDArray
     "return: [batch..., n]",
 )
 def softmax(loss: AnyNDArray) -> AnyNDArray:
-    return np.exp(loss - np.logaddexp.reduce(loss, axis=-1))  # type: ignore[no-any-return]
+    return np.exp(loss - np.logaddexp.reduce(loss, axis=-1))
 
 
 @check_shapes(

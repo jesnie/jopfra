@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
-from typing import Callable, TypeAlias
+from collections.abc import Callable, Iterator
+from typing import TypeAlias
 
 from jopfra.api import Evaluation, Problem
 

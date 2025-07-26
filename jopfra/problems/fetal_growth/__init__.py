@@ -1,14 +1,10 @@
 import datetime as dt
 from pathlib import Path
-from typing import Callable
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import torch as tc
 from check_shapes import check_shapes
 
-from jopfra.api import Problem
 from jopfra.paths import MatplotlibPngFile, MiscDir
 from jopfra.problems.api import torch_problem
 
@@ -20,7 +16,7 @@ ROOT = Path(__file__).parent
     "return[1]: [n_data]",
 )
 def _load_size_data() -> tuple[tc.Tensor, tc.Tensor]:
-    due_date = dt.datetime(2000, 11, 7)
+    due_date = dt.datetime(2000, 11, 7)  # noqa: DTZ001
     conception_date = due_date - dt.timedelta(weeks=40)
 
     size_df = pd.read_csv(ROOT / "size.csv")
@@ -98,7 +94,7 @@ def _plot(dest: MiscDir, x: tc.Tensor) -> None:
 
     png = dest.get("growth.png", MatplotlibPngFile)
     with png.subplots(1, 1, figsize=(12, 16)) as (_, ax):
-        ax.set_title(f"L: {loss:.4}; T: {translate*7:.3}; Q: {quantile:.2%}; std: {std:.3}")
+        ax.set_title(f"L: {loss:.4}; T: {translate * 7:.3}; Q: {quantile:.2%}; std: {std:.3}")
         ax.plot(age_weeks, y_median, label="Median")
         ax.plot(age_weeks, y_fitted, label="Fitted")
         ax.scatter(_size_age_weeks, _size_weight_g, label="Data")
