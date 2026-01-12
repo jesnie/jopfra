@@ -1,7 +1,7 @@
 import sys
 from collections.abc import Iterator
 from contextlib import contextmanager, suppress
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -50,7 +50,7 @@ def setup_dest(root: Path) -> ResultDir:
     root.mkdir(parents=True, exist_ok=True)
 
     script_name = Path(sys.argv[0]).stem
-    timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
+    timestamp = datetime.now(tz=UTC).strftime("%Y%m%d_%H%M%S_%f")
 
     branch_name = "NO_BRANCH"
     with suppress(InvalidGitRepositoryError):  # Keep current/default branch_name

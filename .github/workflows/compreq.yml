@@ -20,6 +20,6 @@ jobs:
           ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
       - run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - run: uv run --locked --no-editable ./compreq.sh
